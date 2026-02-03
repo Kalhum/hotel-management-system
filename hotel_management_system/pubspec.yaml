@@ -17,3 +17,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/images/authLogo/
+  fonts:
+    - family: Prompt
+      fonts:
+        - asset: assets/fonts/Prompt/Prompt-Regular.ttf
+        - asset: assets/fonts/Prompt/Prompt-Bold.ttf
+          weight: 700
