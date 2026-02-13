@@ -9,6 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  carousel_slider: ^5.1.1
+  image_picker: ^1.1.2 
+  signature: ^5.5.0
+  image_gallery_saver: ^2.0.3
+  path_provider: ^2.1.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +23,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/images/authLogo/
+    - assets/images/rooms/
+    - assets/images/houses/
+  fonts:
+    - family: Prompt
+      fonts:
+        - asset: assets/fonts/Prompt/Prompt-Regular.ttf
+        - asset: assets/fonts/Prompt/Prompt-Bold.ttf
+          weight: 700
