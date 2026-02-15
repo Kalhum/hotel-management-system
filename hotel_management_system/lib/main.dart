@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotel_management_system/Splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,11 +10,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // ignore: prefer_const_constructors
+      home: SplashScreen(),
+      theme: ThemeData(
+        fontFamily: 'Prompt',
+        useMaterial3: true,
       ),
     );
   }
