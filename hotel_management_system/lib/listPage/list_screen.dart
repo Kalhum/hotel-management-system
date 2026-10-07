@@ -6,8 +6,7 @@ import 'package:hotel_management_system/listPage/boxListCompanent.dart';
 import 'package:hotel_management_system/listPage/infoAbout.dart';
 
 class ListScreen extends StatefulWidget {
-  final bool? checkInStatus;
-  final bool? roomConCheck;
+  final bool? checkInStatus, roomConCheck;
   ListScreen({super.key, this.checkInStatus, this.roomConCheck = false});
 
   @override
