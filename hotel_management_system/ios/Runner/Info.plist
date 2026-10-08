@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>แอปต้องการขอเข้าถึงกล้องเพื่อถ่ายรูปบัตรประชาชนสำหรับยืนยันการจอง</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>แอปต้องการเข้าถึงคลังภาพเพื่อเลือกรูปหลักฐานการโอนเงิน</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -45,15 +49,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-
-	<!-- ขออนุญาติเข้าใช้กล้องถ่ายรูป -->
-	<key>NSCameraUsageDescription</key>
-    <string>แอปต้องการขอเข้าถึงกล้องเพื่อถ่ายรูปบัตรประชาชนสำหรับยืนยันการจอง</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>แอปต้องการเข้าถึงคลังภาพเพื่อเลือกรูปหลักฐานการโอนเงิน</string>
 </dict>
 </plist>
