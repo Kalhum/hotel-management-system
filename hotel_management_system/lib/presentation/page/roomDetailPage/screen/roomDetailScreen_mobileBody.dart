@@ -96,7 +96,14 @@ class _RoomDetailScreenState extends State<RoomDetailScreenMobileBody> {
     if (!canContinue) return;
 
     try {
-      await context.read<CartProvider>().addItem(selection);
+      final added = await context.read<CartProvider>().addItem(selection);
+      if (!added) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('รายการนี้มีอยู่ในตะกร้าแล้ว')),
+        );
+        return;
+      }
     } catch (error) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

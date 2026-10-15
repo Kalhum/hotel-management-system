@@ -11,6 +11,7 @@ class CartProvider extends ChangeNotifier {
   CartProvider(this.useCase);
 
   final List<CartItemEntitise> _items = [];
+  final List<({CartItemEntitise item, int sessionVersion})> _pendingAdds = [];
   String? _userId;
   // ป้องกัน response จาก session ของผู้ใช้ก่อนหน้ามาแก้ state ปัจจุบัน
   int _userSessionVersion = 0;
@@ -27,6 +28,16 @@ class CartProvider extends ChangeNotifier {
   double get depositAmount => totalPrice * Constants.depositPercent;
 
   double get remainingAmount => totalPrice - depositAmount;
+
+  bool hasRoomForStay(String roomId, DateTime? checkIn, DateTime? checkOut) {
+    if (checkIn == null || checkOut == null) return false;
+    return _items.any(
+      (item) =>
+          item.roomId == roomId &&
+          _sameDate(item.checkIn, checkIn) &&
+          _sameDate(item.checkOut, checkOut),
+    );
+  }
 
   void syncForUser(String? userId) {
     if (_userId == userId) return;
@@ -65,14 +76,44 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addItem(CartItemEntitise item) async {
+  Future<bool> addItem(CartItemEntitise item) async {
     final sessionVersion = _userSessionVersion;
-    final addedItem = await useCase.addItem(item);
-    if (sessionVersion != _userSessionVersion) return;
-    _cartRevision++;
-    _items.add(addedItem);
-    notifyListeners();
+    final alreadyInCart =
+        _items.any((existing) => _sameSelection(existing, item));
+    final isBeingAdded = _pendingAdds.any(
+      (pending) =>
+          pending.sessionVersion == sessionVersion &&
+          _sameSelection(pending.item, item),
+    );
+    if (alreadyInCart || isBeingAdded) return false;
+
+    final pending = (item: item, sessionVersion: sessionVersion);
+    _pendingAdds.add(pending);
+    try {
+      final addedItem = await useCase.addItem(item);
+      if (sessionVersion != _userSessionVersion) return false;
+      _cartRevision++;
+      _items.add(addedItem);
+      notifyListeners();
+      return true;
+    } finally {
+      _pendingAdds.remove(pending);
+    }
   }
+
+  bool _sameSelection(CartItemEntitise first, CartItemEntitise second) =>
+      first.roomId == second.roomId &&
+      _sameDate(first.checkIn, second.checkIn) &&
+      _sameDate(first.checkOut, second.checkOut) &&
+      first.adultCount == second.adultCount &&
+      first.childCount == second.childCount &&
+      first.extraBedType?.id == second.extraBedType?.id &&
+      first.extraBedQuantity == second.extraBedQuantity;
+
+  bool _sameDate(DateTime first, DateTime second) =>
+      first.year == second.year &&
+      first.month == second.month &&
+      first.day == second.day;
 
   Future<void> removeItem(int id) async {
     final sessionVersion = _userSessionVersion;
