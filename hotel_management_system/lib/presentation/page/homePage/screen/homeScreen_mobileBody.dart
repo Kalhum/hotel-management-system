@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../util/model/model.dart';
+import '../../../../util/provider/cart_provider.dart';
 import '../../../../util/widget/components/bavbar/bottomNavbar.dart';
 import '../../../../util/widget/components/bavbar/topNavbar.dart';
 import '../../../../util/widget/core/constants.dart';
@@ -291,8 +292,8 @@ class _HomeScreenMobileBodyState extends State<HomeScreenMobileBody> {
                         _buildTabButton(context, "บ้านพัก", RoomType.house),
                       ],
                     ),
-                    Consumer<HomeScreenProvider>(
-                      builder: (context, provider, child) {
+                    Consumer2<HomeScreenProvider, CartProvider>(
+                      builder: (context, provider, cartProvider, child) {
                         if (!provider.hasDateFilter ||
                             provider.roomData.isEmpty) {
                           return const SizedBox.shrink();
@@ -304,8 +305,8 @@ class _HomeScreenMobileBodyState extends State<HomeScreenMobileBody> {
                       },
                     ),
                     const SizedBox(height: 8),
-                    Consumer<HomeScreenProvider>(
-                        builder: (context, provider, child) {
+                    Consumer2<HomeScreenProvider, CartProvider>(
+                        builder: (context, provider, cartProvider, child) {
                       return Expanded(
                         child: !provider.hasDateFilter
                             ? _buildEmptyDatePrompt(context)
@@ -327,6 +328,12 @@ class _HomeScreenMobileBodyState extends State<HomeScreenMobileBody> {
                                             provider.filteredRoomData,
                                             len: provider.len,
                                             crossAxisCount: 2,
+                                            isInCart: (room) =>
+                                                cartProvider.hasRoomForStay(
+                                              room.roomId,
+                                              provider.checkInDate,
+                                              provider.checkOutDate,
+                                            ),
                                             onRoomTap: (room) async {
                                               final available = await provider
                                                   .refreshAndCheckRoom(
